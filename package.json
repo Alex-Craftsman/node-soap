@@ -32,8 +32,6 @@
     "test": "./test"
   },
   "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc -p .",
     "clean": "rm -rf lib",
     "watch": "tsc -w -p .",
     "lint": "tslint -p tsconfig.json",
