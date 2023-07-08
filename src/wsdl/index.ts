@@ -240,6 +240,16 @@ export class WSDL {
         // Support RPC/literal messages where response body contains one element named
         // after the operation + 'Response'. See http://www.w3.org/TR/wsdl#_names
         if (!message) {
+          const _name = name.charAt(0).toUpperCase() + name.slice(1);
+
+          if (this.definitions.messages[_name]) {
+            name = _name;
+            
+            message = this.definitions.messages[name];
+          }
+        }
+
+        if (!message) {
           try {
             // Determine if this is request or response
             let isInput = false;
