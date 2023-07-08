@@ -68,6 +68,8 @@ export class Client extends EventEmitter {
   private normalizeNames: boolean;
   private overridePromiseSuffix: string;
 
+  private useInputName: boolean;
+
   constructor(wsdl: WSDL, endpoint?: string, options?: IOptions) {
     super();
     options = options || {};
@@ -192,6 +194,8 @@ export class Client extends EventEmitter {
       this.wsdl.options.overrideRootElement = options.overrideRootElement;
     }
     this.wsdl.options.forceSoap12Headers = !!options.forceSoap12Headers;
+
+    this.useInputName = options.useInputName ?? true;
   }
 
   private _defineService(service: ServiceElement, endpoint?: string) {
@@ -411,7 +415,7 @@ export class Client extends EventEmitter {
     } else {
       assert.ok(!style || style === 'document', 'invalid message definition for rpc style binding');
       // pass `input.$lookupType` if `input.$type` could not be found
-      message = this.wsdl.objectToDocumentXML(input.$name, args, input.targetNSAlias, input.targetNamespace, (input.$type || input.$lookupType));
+      message = this.wsdl.objectToDocumentXML(this.useInputName ? input.$name : method.$name, args, input.targetNSAlias, input.targetNamespace, (input.$type || input.$lookupType));
     }
 
     let decodedHeaders;
